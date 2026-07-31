@@ -54,6 +54,93 @@ type Piece struct {
 	Player Player
 }
 
+// Flags encapsulates castling rights and pawn double-step state in a bitfield.
+//
+//	bits 0-3:   castling rights
+//	bits 8-15:  white pawn double-step column flags
+//	bits 16-23: black pawn double-step column flags
+type Flags uint32
+
+const (
+	flagWhiteKingside  Flags = 1 << 0
+	flagWhiteQueenside Flags = 1 << 1
+	flagBlackKingside  Flags = 1 << 2
+	flagBlackQueenside Flags = 1 << 3
+	whitePawnDSShift         = 8
+	blackPawnDSShift         = 16
+	pawnDSMask         Flags = 0xFF<<whitePawnDSShift | 0xFF<<blackPawnDSShift
+	allCastlingRights  Flags = flagWhiteKingside | flagWhiteQueenside | flagBlackKingside | flagBlackQueenside
+)
+
+func NewFlags() Flags { return allCastlingRights }
+
+func (f Flags) CanCastleKingside(p Player) bool {
+	if p == White {
+		return f&flagWhiteKingside != 0
+	}
+	return f&flagBlackKingside != 0
+}
+
+func (f Flags) CanCastleQueenside(p Player) bool {
+	if p == White {
+		return f&flagWhiteQueenside != 0
+	}
+	return f&flagBlackQueenside != 0
+}
+
+func (f Flags) WithCastlingRights(p Player, kingside, queenside bool) Flags {
+	ks, qs := flagWhiteKingside, flagWhiteQueenside
+	if p == Black {
+		ks, qs = flagBlackKingside, flagBlackQueenside
+	}
+	f &^= ks | qs
+	if kingside {
+		f |= ks
+	}
+	if queenside {
+		f |= qs
+	}
+	return f
+}
+
+func (f Flags) PawnDoubleStep(p Player, col int) bool {
+	shift := whitePawnDSShift
+	if p == Black {
+		shift = blackPawnDSShift
+	}
+	return f&(1<<uint(shift+col)) != 0
+}
+
+func (f Flags) WithPawnDoubleStep(p Player, col int) Flags {
+	shift := whitePawnDSShift
+	if p == Black {
+		shift = blackPawnDSShift
+	}
+	return f | 1<<uint(shift+col)
+}
+
+func (f Flags) ClearedPawnDoubleSteps() Flags {
+	return f &^ pawnDSMask
+}
+
+func (f Flags) RevokedForSquare(x, y int) Flags {
+	switch {
+	case y == 0 && x == 0:
+		f &^= flagWhiteQueenside
+	case y == 0 && x == 4:
+		f &^= flagWhiteKingside | flagWhiteQueenside
+	case y == 0 && x == 7:
+		f &^= flagWhiteKingside
+	case y == 7 && x == 0:
+		f &^= flagBlackQueenside
+	case y == 7 && x == 4:
+		f &^= flagBlackKingside | flagBlackQueenside
+	case y == 7 && x == 7:
+		f &^= flagBlackKingside
+	}
+	return f
+}
+
 type MoveKind uint8
 
 const (

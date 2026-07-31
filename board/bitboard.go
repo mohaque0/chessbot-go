@@ -2,21 +2,6 @@ package board
 
 import "fmt"
 
-// flags bitfield layout:
-//
-//	bits 0-3:   castling rights
-//	bits 8-15:  white pawn double-step column flags
-//	bits 16-23: black pawn double-step column flags
-const (
-	flagWhiteKingside  uint32 = 1 << 0
-	flagWhiteQueenside uint32 = 1 << 1
-	flagBlackKingside  uint32 = 1 << 2
-	flagBlackQueenside uint32 = 1 << 3
-	whitePawnDSShift          = 8
-	blackPawnDSShift          = 16
-	pawnDSMask         uint32 = 0xFF<<whitePawnDSShift | 0xFF<<blackPawnDSShift
-)
-
 type BitBoard struct {
 	kings   [2]Bits
 	queens  [2]Bits
@@ -24,7 +9,7 @@ type BitBoard struct {
 	knights [2]Bits
 	rooks   [2]Bits
 	pawns   [2]Bits
-	flags   uint32
+	flags   Flags
 }
 
 // NewBitBoard returns the standard starting position.
@@ -54,7 +39,7 @@ func NewBitBoard() BitBoard {
 	b.knights[Black].Set(6, 7)
 	b.rooks[Black].Set(7, 7)
 
-	b.flags = flagWhiteKingside | flagWhiteQueenside | flagBlackKingside | flagBlackQueenside
+	b.flags = NewFlags()
 	return b
 }
 
@@ -62,72 +47,20 @@ func NewBitBoard() BitBoard {
 func NewBlankBitBoard() BitBoard { return BitBoard{} }
 
 // ---------------------------------------------------------------------------
-// Flag accessors
+// Flag accessors (delegated to Flags)
 // ---------------------------------------------------------------------------
 
-func (b *BitBoard) CanCastleKingside(p Player) bool {
-	if p == White {
-		return b.flags&flagWhiteKingside != 0
-	}
-	return b.flags&flagBlackKingside != 0
-}
-
-func (b *BitBoard) CanCastleQueenside(p Player) bool {
-	if p == White {
-		return b.flags&flagWhiteQueenside != 0
-	}
-	return b.flags&flagBlackQueenside != 0
-}
+func (b *BitBoard) CanCastleKingside(p Player) bool  { return b.flags.CanCastleKingside(p) }
+func (b *BitBoard) CanCastleQueenside(p Player) bool { return b.flags.CanCastleQueenside(p) }
 
 func (b *BitBoard) SetCastlingRights(p Player, kingside, queenside bool) {
-	ks, qs := flagWhiteKingside, flagWhiteQueenside
-	if p == Black {
-		ks, qs = flagBlackKingside, flagBlackQueenside
-	}
-	b.flags &^= ks | qs
-	if kingside {
-		b.flags |= ks
-	}
-	if queenside {
-		b.flags |= qs
-	}
+	b.flags = b.flags.WithCastlingRights(p, kingside, queenside)
 }
 
-func (b *BitBoard) PawnDoubleStep(p Player, col int) bool {
-	shift := whitePawnDSShift
-	if p == Black {
-		shift = blackPawnDSShift
-	}
-	return b.flags&(1<<uint(shift+col)) != 0
-}
+func (b *BitBoard) PawnDoubleStep(p Player, col int) bool { return b.flags.PawnDoubleStep(p, col) }
 
 func (b *BitBoard) SetPawnDoubleStep(p Player, col int) {
-	shift := whitePawnDSShift
-	if p == Black {
-		shift = blackPawnDSShift
-	}
-	b.flags |= 1 << uint(shift+col)
-}
-
-func (b *BitBoard) clearAllPawnDoubleSteps() {
-	b.flags &^= pawnDSMask
-}
-
-func (b *BitBoard) revokeCastleRightsForSquare(x, y int) {
-	switch {
-	case y == 0 && x == 0:
-		b.flags &^= flagWhiteQueenside
-	case y == 0 && x == 4:
-		b.flags &^= flagWhiteKingside | flagWhiteQueenside
-	case y == 0 && x == 7:
-		b.flags &^= flagWhiteKingside
-	case y == 7 && x == 0:
-		b.flags &^= flagBlackQueenside
-	case y == 7 && x == 4:
-		b.flags &^= flagBlackKingside | flagBlackQueenside
-	case y == 7 && x == 7:
-		b.flags &^= flagBlackKingside
-	}
+	b.flags = b.flags.WithPawnDoubleStep(p, col)
 }
 
 // ---------------------------------------------------------------------------
@@ -217,7 +150,7 @@ func (b *BitBoard) allOccupied() Bits {
 // ApplyMove returns a new board with the move applied. No legality check.
 func (b *BitBoard) ApplyMove(m Move) BitBoard {
 	result := *b
-	result.clearAllPawnDoubleSteps()
+	result.flags = result.flags.ClearedPawnDoubleSteps()
 
 	switch m.Kind {
 	case NormalMove:
@@ -232,8 +165,8 @@ func (b *BitBoard) ApplyMove(m Move) BitBoard {
 			piece = Piece{m.Promote, piece.Player}
 		}
 
-		result.revokeCastleRightsForSquare(srcX, srcY)
-		result.revokeCastleRightsForSquare(dstX, dstY)
+		result.flags = result.flags.RevokedForSquare(srcX, srcY)
+		result.flags = result.flags.RevokedForSquare(dstX, dstY)
 		result.clearAllAt(srcX, srcY)
 		result.clearAllAt(dstX, dstY)
 
@@ -266,8 +199,8 @@ func (b *BitBoard) ApplyMove(m Move) BitBoard {
 		result.clearSquare(m.Player, 7, y)
 		result.kings[m.Player].Set(6, y)
 		result.rooks[m.Player].Set(5, y)
-		result.revokeCastleRightsForSquare(4, y)
-		result.revokeCastleRightsForSquare(7, y)
+		result.flags = result.flags.RevokedForSquare(4, y)
+		result.flags = result.flags.RevokedForSquare(7, y)
 
 	case QueensideCastle:
 		y := 0
@@ -279,8 +212,8 @@ func (b *BitBoard) ApplyMove(m Move) BitBoard {
 		result.clearSquare(m.Player, 4, y)
 		result.kings[m.Player].Set(2, y)
 		result.rooks[m.Player].Set(3, y)
-		result.revokeCastleRightsForSquare(0, y)
-		result.revokeCastleRightsForSquare(4, y)
+		result.flags = result.flags.RevokedForSquare(0, y)
+		result.flags = result.flags.RevokedForSquare(4, y)
 	}
 
 	return result
