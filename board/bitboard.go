@@ -245,6 +245,8 @@ func (b *BitBoard) ApplyMove(m Move) BitBoard {
 			if dy == 2 {
 				result.SetPawnDoubleStep(piece.Player, dstX)
 			}
+			// En passant: the captured pawn is on the same rank as the source,
+			// not on the destination square.
 			if piece.Player == White && srcY == 4 && dstX != srcX && b.PawnDoubleStep(Black, dstX) {
 				result.clearSquare(Black, dstX, srcY)
 			}
