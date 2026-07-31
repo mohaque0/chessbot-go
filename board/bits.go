@@ -1,59 +1,40 @@
 package board
 
-import "fmt"
+import (
+	"fmt"
+	"math/bits"
+)
 
 type Bits uint64
 
-func NewEmpty() Bits {
-	return 0
-}
+func NewBits(v uint64) Bits { return Bits(v) }
 
-func NewSingleBit(idx uint) Bits {
-	return 1 << idx
-}
+func CoordToIdx(x, y int) int { return y*8 + x }
 
-func (b Bits) Invert() Bits {
-	return ^(b)
-}
+func IdxToCoord(idx int) (int, int) { return idx % 8, idx / 8 }
 
-func (b Bits) Get(x uint8, y uint8) int {
-	if b.Occupied(x, y) {
-		return 1
-	}
-	return 0
-}
+func SingleBit(x, y int) Bits { return 1 << uint(y*8+x) }
 
-func (b *Bits) Set(x uint8, y uint8) {
-	*b = Union(*b, NewSingleBit(coord_to_idx(x, y)))
-}
+func SingleBitIdx(idx int) Bits { return 1 << uint(idx) }
 
-func (b *Bits) Unset(x uint8, y uint8) {
-	*b = Intersect(*b, NewSingleBit(coord_to_idx(x, y)).Invert())
-}
+func (b Bits) IsEmpty() bool { return b == 0 }
 
-func (b Bits) Occupied(x uint8, y uint8) bool {
-	return NewSingleBit(coord_to_idx(x, y))&b != 0
-}
-func (b Bits) String() string {
-	return fmt.Sprintf("%064b", uint64(b))
-}
+func (b Bits) Get(x, y int) bool { return b&SingleBit(x, y) != 0 }
 
-func Union(others ...Bits) Bits {
-	var ret = NewEmpty()
-	for _, o := range others {
-		ret |= o
-	}
-	return ret
-}
+func (b *Bits) Set(x, y int) { *b |= SingleBit(x, y) }
 
-func Intersect(others ...Bits) Bits {
-	var ret = NewEmpty()
-	for _, o := range others {
-		ret &= o
-	}
-	return ret
-}
+func (b *Bits) Unset(x, y int) { *b &^= SingleBit(x, y) }
 
-func coord_to_idx(x uint8, y uint8) uint {
-	return uint(x) + uint(y)*8
-}
+func (b *Bits) SetIdx(idx int) { *b |= SingleBitIdx(idx) }
+
+func (b Bits) LSB() int { return bits.TrailingZeros64(uint64(b)) }
+
+func (b Bits) MSB() int { return 63 - bits.LeadingZeros64(uint64(b)) }
+
+func (b Bits) ClearLSB() Bits { return b & (b - 1) }
+
+func ShiftUp(b Bits, n int) Bits { return b << uint(8*n) }
+
+func ShiftDown(b Bits, n int) Bits { return b >> uint(8*n) }
+
+func (b Bits) String() string { return fmt.Sprintf("0x%016X", uint64(b)) }
