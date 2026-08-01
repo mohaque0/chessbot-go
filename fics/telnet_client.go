@@ -5,13 +5,10 @@ import (
 	"net"
 )
 
-type SoughtGame struct {
-}
-
 type TelnetClient struct {
-	conn            net.Conn
-	MessageReceiver chan string
-	MessageSender   chan string
+	conn net.Conn
+	Recv chan string
+	Send chan string
 }
 
 func NewTelnetClient(url string) (*TelnetClient, error) {
@@ -27,9 +24,9 @@ func NewTelnetClient(url string) (*TelnetClient, error) {
 	go writeRoutine(send, conn)
 
 	return &TelnetClient{
-		conn:            conn,
-		MessageReceiver: recv,
-		MessageSender:   send,
+		conn: conn,
+		Recv: recv,
+		Send: send,
 	}, nil
 }
 
