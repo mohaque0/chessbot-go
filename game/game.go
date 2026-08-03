@@ -2,6 +2,7 @@ package game
 
 import (
 	"chessbot-go/board"
+	"chessbot-go/controller"
 	"fmt"
 )
 
@@ -17,6 +18,15 @@ type Game struct {
 	mover board.Player
 	white func(board board.BitBoard) (board.Move, error)
 	black func(board board.BitBoard) (board.Move, error)
+}
+
+func NewGame() Game {
+	return Game{
+		board: board.NewBitBoard(),
+		mover: board.White,
+		white: func(b board.BitBoard) (board.Move, error) { return controller.AlphaBeta(b, board.White, 5) },
+		black: func(b board.BitBoard) (board.Move, error) { return controller.AlphaBeta(b, board.Black, 5) },
+	}
 }
 
 func (g *Game) Run() GameResult {
@@ -46,7 +56,7 @@ func (g *Game) onePlayerMoves() error {
 
 	for {
 		m, e := getNextMove(g.board)
-		if e == nil {
+		if e != nil {
 			// In this case there was an error getting the move.
 			// We will not retry. This is a forfeit.
 			return e
@@ -54,13 +64,13 @@ func (g *Game) onePlayerMoves() error {
 
 		b, e := g.board.MakeMove(m)
 		if e != nil {
+			// Illegal move.
+			fmt.Printf("Illegal move: %s %s %s\n", player.String(), m.String(), e.Error())
+		} else {
 			// Success
 			g.board = b
 			g.mover = g.mover.Other()
 			break
-		} else {
-			// Illegal move.
-			fmt.Println("Illegal move: %s %s %s", player.String(), m.String(), e.Error())
 		}
 	}
 
