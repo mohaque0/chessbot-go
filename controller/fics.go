@@ -5,11 +5,14 @@ import (
 	"chessbot-go/fics"
 	"chessbot-go/game"
 	"fmt"
+	"io"
 	"math/rand"
+	"strings"
+	"time"
 )
 
-func FicsGame(depth uint) game.GameResult {
-	client, err := fics.NewFicsClient()
+func FicsGame(depth uint, debugWr io.Writer) game.GameResult {
+	client, err := fics.NewFicsClient(debugWr)
 	if err != nil {
 		fmt.Printf("Failed to connect to FICS: %v\n", err)
 		return game.Draw
@@ -18,12 +21,22 @@ func FicsGame(depth uint) game.GameResult {
 
 	fmt.Println("Connected to FICS. Waiting for login prompt...")
 
-	if !waitForLogin(client) {
+	if !waitForLoginPrompt(client) {
 		fmt.Println("Did not receive login prompt.")
 		return game.Draw
 	}
 
-	// Log in as guest.
+	// Send "guest" at the login: prompt.
+	client.Send <- fics.FicsSendText("guest")
+	fmt.Println("Sent guest login.")
+
+	// Wait for "Press return to enter the server as ..." prompt.
+	if !waitForGuestConfirm(client) {
+		fmt.Println("Did not receive guest confirmation prompt.")
+		return game.Draw
+	}
+
+	// Press return to enter.
 	client.Send <- fics.FicsSendText("")
 	fmt.Println("Logged in as guest.")
 
@@ -31,14 +44,18 @@ func FicsGame(depth uint) game.GameResult {
 	client.Send <- fics.FicsSendSetStyle{}
 	client.Send <- fics.FicsSendSetNoWrap{}
 
-	// Request sought games.
-	client.Send <- fics.FicsSendSought{}
-	fmt.Println("Requesting sought games...")
+	// Poll for sought games until we find one.
+	var candidates []fics.FicsReceivedSoughtGame
+	for {
+		client.Send <- fics.FicsSendSought{}
+		fmt.Println("Requesting sought games...")
 
-	candidates := collectSoughtGames(client)
-	if len(candidates) == 0 {
-		fmt.Println("No standard or blitz games available.")
-		return game.Draw
+		candidates = collectSoughtGames(client)
+		if len(candidates) > 0 {
+			break
+		}
+		fmt.Println("No standard or blitz games available, retrying in 5s...")
+		time.Sleep(5 * time.Second)
 	}
 
 	chosen := candidates[rand.Intn(len(candidates))]
@@ -126,7 +143,17 @@ func FicsGame(depth uint) game.GameResult {
 	}
 }
 
-func waitForLogin(client *fics.FicsClient) bool {
+func waitForLoginPrompt(client *fics.FicsClient) bool {
+	for msg := range client.Recv {
+		switch msg.(type) {
+		case fics.FicsReceivedLoginPrompt:
+			return true
+		}
+	}
+	return false
+}
+
+func waitForGuestConfirm(client *fics.FicsClient) bool {
 	for msg := range client.Recv {
 		switch msg.(type) {
 		case fics.FicsReceivedRequestLogin:
@@ -154,9 +181,12 @@ func collectSoughtGames(client *fics.FicsClient) []fics.FicsReceivedSoughtGame {
 			if sg.GameType == fics.Standard || sg.GameType == fics.Blitz {
 				candidates = append(candidates, sg)
 			}
-		default:
-			// Non-sought message means the sought list is done.
-			return candidates
+		case fics.FicsReceivedRequestUnknown:
+			// "N ads displayed." marks the end of the sought list.
+			// Skip all other unknown messages (MOTD, admin tells, etc.).
+			if strings.Contains(sg.Text, "ads displayed") {
+				return candidates
+			}
 		}
 	}
 	return candidates

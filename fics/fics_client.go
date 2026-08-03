@@ -2,6 +2,7 @@ package fics
 
 import (
 	"fmt"
+	"io"
 	"regexp"
 	"strings"
 )
@@ -14,8 +15,8 @@ type FicsClient struct {
 	Send   chan FicsMessageSend
 }
 
-func NewFicsClient() (*FicsClient, error) {
-	telnet, err := NewTelnetClient("freechess.org:23")
+func NewFicsClient(debugWr io.Writer) (*FicsClient, error) {
+	telnet, err := NewTelnetClient("freechess.org:23", debugWr)
 	if err != nil {
 		return nil, err
 	}
@@ -41,6 +42,8 @@ func readFromFics(src chan string, dst chan FicsMessageReceived) {
 	defer close(dst)
 	for input := range src {
 		switch {
+		case strings.Contains(input, "login:"):
+			dst <- FicsReceivedLoginPrompt{}
 		case enterAsGuestPattern.MatchString(input):
 			dst <- FicsReceivedRequestLogin{}
 		case strings.Contains(input, "<12>"):

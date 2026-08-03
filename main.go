@@ -6,12 +6,15 @@ import (
 	"chessbot-go/game"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 )
 
 func main() {
+	debug := flag.String("debug", "", "dump raw FICS data to file (use \"-\" for stderr)")
+
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "Usage: %s <mode>\n\nModes:\n  self   AlphaBeta vs AlphaBeta (default)\n  fics   Play on FICS as guest\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "Usage: %s [flags] <mode>\n\nModes:\n  self   AlphaBeta vs AlphaBeta (default)\n  fics   Play on FICS as guest\n\nFlags:\n", os.Args[0])
 		flag.PrintDefaults()
 	}
 	flag.Parse()
@@ -29,7 +32,19 @@ func main() {
 		r := g.Run()
 		fmt.Printf("Result: %v\n", r)
 	case "fics":
-		r := controller.FicsGame(5)
+		var debugWr io.Writer
+		if *debug == "-" {
+			debugWr = os.Stderr
+		} else if *debug != "" {
+			f, err := os.Create(*debug)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Failed to open debug file: %v\n", err)
+				os.Exit(1)
+			}
+			defer f.Close()
+			debugWr = f
+		}
+		r := controller.FicsGame(5, debugWr)
 		fmt.Printf("Result: %v\n", r)
 	default:
 		fmt.Fprintf(os.Stderr, "Unknown mode: %s\n", mode)
