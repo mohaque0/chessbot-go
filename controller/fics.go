@@ -75,15 +75,11 @@ func FicsGame(depth uint, debugWr io.Writer) game.GameResult {
 	}
 	firstBoard := first.board
 
-	// The mover in the first board tells us whose turn it is.
-	// If it's our turn, we're that color.
 	var ourColor board.Player
-	if firstBoard.LastMove == nil {
-		// No move has been made yet — we are white.
+	if firstBoard.MyRelation == 1 {
 		ourColor = board.White
 	} else {
-		// A move was made; the mover is us.
-		ourColor = firstBoard.Mover
+		ourColor = board.Black
 	}
 	fmt.Printf("Playing as %s\n", ourColor)
 

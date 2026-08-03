@@ -61,9 +61,10 @@ type FicsReceivedRequestUnknown struct {
 }
 
 type FicsReceivedBoard struct {
-	Board    board.BitBoard
-	Mover    board.Player
-	LastMove *board.Move
+	Board      board.BitBoard
+	Mover      board.Player
+	LastMove   *board.Move
+	MyRelation int // 1 = playing as white, -1 = playing as black
 }
 
 type FicsReceivedIllegalMove struct {

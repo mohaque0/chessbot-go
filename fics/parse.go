@@ -105,6 +105,7 @@ func parseSoughtLine(line string) (FicsReceivedSoughtGame, bool) {
 //	12: white can castle queenside (0/1)
 //	13: black can castle kingside (0/1)
 //	14: black can castle queenside (0/1)
+//	19: my relation to game (1=white, -1=black, 0=observing)
 //	27: move string (e.g. "P/e2-e4", "o-o", "none")
 func parseStyle12(line string) (FicsReceivedBoard, bool) {
 	idx := strings.Index(line, "<12>")
@@ -151,6 +152,8 @@ func parseStyle12(line string) (FicsReceivedBoard, bool) {
 	b.SetCastlingRights(board.White, whiteKS == 1, whiteQS == 1)
 	b.SetCastlingRights(board.Black, blackKS == 1, blackQS == 1)
 
+	myRelation, _ := strconv.Atoi(tokens[19])
+
 	moveStr := tokens[27]
 	var lastMove *board.Move
 	if moveStr != "none" {
@@ -161,9 +164,10 @@ func parseStyle12(line string) (FicsReceivedBoard, bool) {
 	}
 
 	return FicsReceivedBoard{
-		Board:    b,
-		Mover:    mover,
-		LastMove: lastMove,
+		Board:      b,
+		Mover:      mover,
+		LastMove:   lastMove,
+		MyRelation: myRelation,
 	}, true
 }
 
