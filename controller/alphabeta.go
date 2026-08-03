@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"sync/atomic"
 )
 
 type alphaBetaKind uint
@@ -75,17 +76,17 @@ func alphaBetaPartition(b board.BitBoard, player board.Player, moves []board.Mov
 
 	bestMove := moves[0]
 
+	var atomicAlpha, atomicBeta atomic.Int64
+	atomicAlpha.Store(int64(alpha))
+	atomicBeta.Store(int64(beta))
+
 	ch := make(chan alphaBetaResult, len(moves))
 
 	for _, mv := range moves {
-		// Prevent goroutines from reading alpha/beta while they are concurrently updated.
-		// TODO: use atomic.LoadInt64/atomic.StoreInt64
-		ownedAlpha := alpha
-		ownedBeta := beta
 		go func() {
 			ch <- alphaBetaResult{
 				move:  mv,
-				value: alphaBetaRecursion(Minimizer, b.ApplyMove(mv), player, depth-1, ownedAlpha, ownedBeta),
+				value: alphaBetaRecursion(Minimizer, b.ApplyMove(mv), player, depth-1, int(atomicAlpha.Load()), int(atomicBeta.Load())),
 			}
 		}()
 	}
@@ -96,10 +97,10 @@ func alphaBetaPartition(b board.BitBoard, player board.Player, moves []board.Mov
 			value = candidate.value
 			bestMove = candidate.move
 		}
-		if value > alpha {
-			alpha = value
+		if int64(value) > atomicAlpha.Load() {
+			atomicAlpha.Store(int64(value))
 		}
-		if alpha > beta {
+		if atomicAlpha.Load() > atomicBeta.Load() {
 			break
 		}
 	}
@@ -107,8 +108,8 @@ func alphaBetaPartition(b board.BitBoard, player board.Player, moves []board.Mov
 	return alphaBetaPartitionResult{
 		move:  bestMove,
 		value: value,
-		alpha: alpha,
-		beta:  beta,
+		alpha: int(atomicAlpha.Load()),
+		beta:  int(atomicBeta.Load()),
 	}, nil
 }
 

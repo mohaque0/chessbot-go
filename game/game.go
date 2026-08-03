@@ -4,6 +4,7 @@ import (
 	"chessbot-go/board"
 	"chessbot-go/controller"
 	"fmt"
+	"time"
 )
 
 type GameResult uint
@@ -43,10 +44,12 @@ func (g *Game) Run() GameResult {
 			}
 			return Draw
 		}
+		start := time.Now()
 		player, m, e := g.onePlayerMoves()
+		elapsed := time.Since(start)
 		idx++
 
-		fmt.Printf("%d: %s played %s\n%s\n", idx, player, m, g.board.String())
+		fmt.Printf("%d: %s played %s (%s)\n%s\n", idx, player, m, elapsed, g.board.String())
 		if e != nil {
 			return playerToWinner(g.mover.Other())
 		}
