@@ -64,11 +64,16 @@ func FicsGame(depth uint, debugWr io.Writer) game.GameResult {
 	client.Send <- fics.FicsSendPlay{GameID: chosen.AdIdx}
 
 	// Wait for the first board to determine our color.
-	firstBoard, ok := waitForBoard(client)
+	first, ok := waitForBoard(client)
 	if !ok {
 		fmt.Println("Did not receive initial board.")
 		return game.Draw
 	}
+	if first.gameEnd != nil {
+		fmt.Printf("Game ended before it started: %s\n", first.gameEnd.Reason)
+		return gameEndToResult(first.gameEnd)
+	}
+	firstBoard := first.board
 
 	// The mover in the first board tells us whose turn it is.
 	// If it's our turn, we're that color.
@@ -101,29 +106,37 @@ func FicsGame(depth uint, debugWr io.Writer) game.GameResult {
 			fmt.Printf("Sent move: %s\n", mv)
 
 			// Wait for server confirmation via board update.
-			boardMsg, ok := waitForBoard(client)
+			resp, ok := waitForBoard(client)
 			if !ok {
 				fmt.Println("Connection lost after sending move.")
 				return game.Draw
 			}
-			currentBoard = boardMsg.Board
-			mover = boardMsg.Mover
+			if resp.gameEnd != nil {
+				fmt.Printf("Game over: %s\n", resp.gameEnd.Reason)
+				return gameEndToResult(resp.gameEnd)
+			}
+			currentBoard = resp.board.Board
+			mover = resp.board.Mover
 			moveIdx++
 			fmt.Printf("%d: %s played %s\n%s\n", moveIdx, ourColor, mv, currentBoard.String())
 		} else {
 			// Opponent's turn — wait for their move.
-			boardMsg, ok := waitForBoard(client)
+			resp, ok := waitForBoard(client)
 			if !ok {
 				fmt.Println("Connection lost waiting for opponent.")
 				return game.Draw
 			}
-			currentBoard = boardMsg.Board
-			mover = boardMsg.Mover
+			if resp.gameEnd != nil {
+				fmt.Printf("Game over: %s\n", resp.gameEnd.Reason)
+				return gameEndToResult(resp.gameEnd)
+			}
+			currentBoard = resp.board.Board
+			mover = resp.board.Mover
 			moveIdx++
 
 			moveStr := "unknown"
-			if boardMsg.LastMove != nil {
-				moveStr = boardMsg.LastMove.String()
+			if resp.board.LastMove != nil {
+				moveStr = resp.board.LastMove.String()
 			}
 			fmt.Printf("%d: %s played %s\n%s\n", moveIdx, ourColor.Other(), moveStr, currentBoard.String())
 		}
@@ -167,14 +180,21 @@ func waitForGuestConfirm(client *fics.FicsClient) (string, bool) {
 	return "", false
 }
 
-func waitForBoard(client *fics.FicsClient) (fics.FicsReceivedBoard, bool) {
+type boardOrEnd struct {
+	board   *fics.FicsReceivedBoard
+	gameEnd *fics.FicsReceivedGameEnd
+}
+
+func waitForBoard(client *fics.FicsClient) (boardOrEnd, bool) {
 	for msg := range client.Recv {
 		switch b := msg.(type) {
 		case fics.FicsReceivedBoard:
-			return b, true
+			return boardOrEnd{board: &b}, true
+		case fics.FicsReceivedGameEnd:
+			return boardOrEnd{gameEnd: &b}, true
 		}
 	}
-	return fics.FicsReceivedBoard{}, false
+	return boardOrEnd{}, false
 }
 
 func collectSoughtGames(client *fics.FicsClient) []fics.FicsReceivedSoughtGame {
@@ -201,4 +221,15 @@ func playerToResult(p board.Player) game.GameResult {
 		return game.WhiteWins
 	}
 	return game.BlackWins
+}
+
+func gameEndToResult(e *fics.FicsReceivedGameEnd) game.GameResult {
+	switch e.Result {
+	case fics.WhiteWins:
+		return game.WhiteWins
+	case fics.BlackWins:
+		return game.BlackWins
+	default:
+		return game.Draw
+	}
 }

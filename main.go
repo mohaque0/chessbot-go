@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+	depth := flag.Uint("depth", 5, "search depth for AlphaBeta")
 	debug := flag.String("debug", "", "dump raw FICS data to file (use \"-\" for stderr)")
 
 	flag.Usage = func() {
@@ -26,8 +27,8 @@ func main() {
 
 	switch mode {
 	case "self":
-		white := func(b board.BitBoard) (board.Move, error) { return controller.AlphaBeta(b, board.White, 5) }
-		black := func(b board.BitBoard) (board.Move, error) { return controller.AlphaBeta(b, board.Black, 5) }
+		white := func(b board.BitBoard) (board.Move, error) { return controller.AlphaBeta(b, board.White, *depth) }
+		black := func(b board.BitBoard) (board.Move, error) { return controller.AlphaBeta(b, board.Black, *depth) }
 		g := game.NewGame(white, black)
 		r := g.Run()
 		fmt.Printf("Result: %v\n", r)
@@ -44,7 +45,7 @@ func main() {
 			defer f.Close()
 			debugWr = f
 		}
-		r := controller.FicsGame(5, debugWr)
+		r := controller.FicsGame(*depth, debugWr)
 		fmt.Printf("Result: %v\n", r)
 	default:
 		fmt.Fprintf(os.Stderr, "Unknown mode: %s\n", mode)

@@ -144,6 +144,63 @@ func TestReadFromFicsSoughtGames(t *testing.T) {
 	}
 }
 
+func TestReadFromFicsGameEnd(t *testing.T) {
+	tests := []struct {
+		name       string
+		input      string
+		wantResult GameEndResult
+		wantReason string
+	}{
+		{
+			name:       "resignation white wins",
+			input:      `{Game 26 (GuestFRZF vs. GuestNPXS) GuestNPXS resigns} 1-0`,
+			wantResult: WhiteWins,
+			wantReason: "GuestNPXS resigns",
+		},
+		{
+			name:       "resignation black wins",
+			input:      `{Game 42 (Alice vs. Bob) Alice resigns} 0-1`,
+			wantResult: BlackWins,
+			wantReason: "Alice resigns",
+		},
+		{
+			name:       "checkmate",
+			input:      `{Game 10 (Foo vs. Bar) Bar checkmated} 1-0`,
+			wantResult: WhiteWins,
+			wantReason: "Bar checkmated",
+		},
+		{
+			name:       "draw",
+			input:      `{Game 5 (X vs. Y) Game drawn by agreement} 1/2-1/2`,
+			wantResult: DrawResult,
+			wantReason: "Game drawn by agreement",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			src := make(chan string, 1)
+			src <- tt.input
+			close(src)
+
+			dst := make(chan FicsMessageReceived, 5)
+			readFromFics(src, dst)
+
+			msg := <-dst
+			ge, ok := msg.(FicsReceivedGameEnd)
+			if !ok {
+				t.Fatalf("expected FicsReceivedGameEnd, got %T", msg)
+			}
+			if ge.Result != tt.wantResult {
+				t.Errorf("Result = %v, want %v", ge.Result, tt.wantResult)
+			}
+			if ge.Reason != tt.wantReason {
+				t.Errorf("Reason = %q, want %q", ge.Reason, tt.wantReason)
+			}
+		})
+	}
+}
+
 func formatUnknowns(msgs []FicsReceivedRequestUnknown) string {
 	var parts []string
 	for _, m := range msgs {

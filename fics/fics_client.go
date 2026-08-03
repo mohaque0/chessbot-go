@@ -10,6 +10,7 @@ import (
 var (
 	enterAsGuestPattern = regexp.MustCompile(`Press return to enter the server as`)
 	loggedInAsPattern   = regexp.MustCompile(`Logging you in as "(\w+)"`)
+	gameEndPattern      = regexp.MustCompile(`\{Game \d+ \(\S+ vs\. \S+\) (.+)\} (1-0|0-1|1/2-1/2)`)
 )
 
 type FicsClient struct {
@@ -60,6 +61,19 @@ func readFromFics(src chan string, dst chan FicsMessageReceived) {
 			dst <- FicsReceivedLoggedInAs{Username: m[1]}
 		case enterAsGuestPattern.MatchString(input):
 			dst <- FicsReceivedRequestLogin{}
+		case gameEndPattern.MatchString(input):
+			m := gameEndPattern.FindStringSubmatch(input)
+			reason := m[1]
+			var result GameEndResult
+			switch m[2] {
+			case "1-0":
+				result = WhiteWins
+			case "0-1":
+				result = BlackWins
+			default:
+				result = DrawResult
+			}
+			dst <- FicsReceivedGameEnd{Result: result, Reason: reason, Message: input}
 		case strings.Contains(cleaned, "<12>"):
 			if b, ok := parseStyle12(cleaned); ok {
 				dst <- b
