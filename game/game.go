@@ -11,6 +11,7 @@ type GameResult uint
 const (
 	WhiteWins GameResult = iota
 	BlackWins
+	Draw
 )
 
 type Game struct {
@@ -31,12 +32,15 @@ func NewGame() Game {
 
 func (g *Game) Run() GameResult {
 	for {
-		if !g.board.IsCheckmated(g.mover) {
-			e := g.onePlayerMoves()
-			if e != nil {
+		moves := g.board.GetMoves(g.mover)
+		if len(moves) == 0 {
+			if g.board.IsInCheck(g.mover) {
 				return playerToWinner(g.mover.Other())
 			}
-		} else {
+			return Draw
+		}
+		e := g.onePlayerMoves()
+		if e != nil {
 			return playerToWinner(g.mover.Other())
 		}
 	}
