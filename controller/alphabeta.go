@@ -196,18 +196,34 @@ func utility(b board.BitBoard, player board.Player) int {
 			case board.King:
 				piece_score += 10000
 			case board.Queen:
-				piece_score += 50
+				piece_score += 70
 			case board.Bishop:
-				piece_score += 30
+				piece_score += 40
 			case board.Knight:
-				piece_score += 30
+				piece_score += 40
 			case board.Rook:
-				piece_score += 50
+				piece_score += 40
 			case board.Pawn:
-				piece_score += 15
+				piece_score += 20
 			}
 
-			score += piece_score * piece_factor
+			position_score := 0
+			if p.Type != board.King {
+				switch p.Player {
+				case board.White:
+					position_score = y
+				case board.Black:
+					position_score = 7 - y
+				default:
+					// This is not chess anymore
+				}
+			}
+			position_factor := 1
+			if p.Player.Other() == player {
+				position_factor = -1
+			}
+
+			score += (piece_score * piece_factor) + (position_score * position_factor)
 		}
 	}
 
