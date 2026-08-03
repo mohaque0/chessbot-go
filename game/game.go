@@ -2,7 +2,6 @@ package game
 
 import (
 	"chessbot-go/board"
-	"chessbot-go/controller"
 	"fmt"
 	"time"
 )
@@ -22,12 +21,12 @@ type Game struct {
 	black func(board board.BitBoard) (board.Move, error)
 }
 
-func NewGame() Game {
+func NewGame(white, black func(board.BitBoard) (board.Move, error)) Game {
 	return Game{
 		board: board.NewBitBoard(),
 		mover: board.White,
-		white: func(b board.BitBoard) (board.Move, error) { return controller.AlphaBeta(b, board.White, 5) },
-		black: func(b board.BitBoard) (board.Move, error) { return controller.AlphaBeta(b, board.Black, 5) },
+		white: white,
+		black: black,
 	}
 }
 

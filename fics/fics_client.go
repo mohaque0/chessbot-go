@@ -3,9 +3,10 @@ package fics
 import (
 	"fmt"
 	"regexp"
+	"strings"
 )
 
-var enterAsGuestPattern = regexp.MustCompile(`"Press return to enter the server as \"(?<username>.*)\"`)
+var enterAsGuestPattern = regexp.MustCompile(`Press return to enter the server as`)
 
 type FicsClient struct {
 	telnet *TelnetClient
@@ -42,8 +43,18 @@ func readFromFics(src chan string, dst chan FicsMessageReceived) {
 		switch {
 		case enterAsGuestPattern.MatchString(input):
 			dst <- FicsReceivedRequestLogin{}
+		case strings.Contains(input, "<12>"):
+			if b, ok := parseStyle12(input); ok {
+				dst <- b
+			} else {
+				dst <- FicsReceivedRequestUnknown{Text: input}
+			}
 		default:
-			dst <- FicsReceivedRequestUnknown{Text: input}
+			if sg, ok := parseSoughtLine(input); ok {
+				dst <- sg
+			} else {
+				dst <- FicsReceivedRequestUnknown{Text: input}
+			}
 		}
 	}
 }
@@ -56,8 +67,17 @@ func sendToFics(src chan FicsMessageSend, dst chan string) {
 			dst <- "sought"
 		case FicsSendText:
 			dst <- string(msg)
+		case FicsSendPlay:
+			dst <- fmt.Sprintf("play %d", msg.GameID)
+		case FicsSendMove:
+			m := msg.Move
+			dst <- fmt.Sprintf("%c%c%c%c", 'a'+rune(m.SrcX), '1'+rune(m.SrcY), 'a'+rune(m.DstX), '1'+rune(m.DstY))
+		case FicsSendSetStyle:
+			dst <- "set style 12"
+		case FicsSendSetNoWrap:
+			dst <- "iset nowrap 1"
 		default:
-			fmt.Print("Error: Unknown")
+			fmt.Print("Error: Unknown send message type")
 			return
 		}
 	}
