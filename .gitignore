@@ -22,3 +22,6 @@ chessbot-go
 # OS
 .DS_Store
 Thumbs.db
+
+# Logs
+fics.log
