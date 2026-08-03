@@ -14,21 +14,87 @@ const (
 	Maximizer
 )
 
+type alphaBetaPartitionResult struct {
+	move  board.Move
+	value int
+	alpha int
+	beta  int
+}
+
+type alphaBetaResult struct {
+	move  board.Move
+	value int
+}
+
 func AlphaBeta(b board.BitBoard, player board.Player, depth uint) (board.Move, error) {
 	moves := b.GetMoves(player)
 	if len(moves) == 0 {
 		return board.Move{}, errors.New("no more moves")
 	}
 
+	bestMove := moves[0]
+	value := math.MinInt
+
+	// This is the Young Brothers Wait Concept optimization. First partition will establish alpha/beta bounds.
+	split := 4
+	if len(moves) < 4 {
+		split = len(moves)
+	}
+	movePartitions := [][]board.Move{moves[:split], moves[split:]}
+
 	alpha := math.MinInt
 	beta := math.MaxInt
+	for _, partition := range movePartitions {
+		candidate, err := alphaBetaPartition(b, player, partition, depth, alpha, beta)
+		if err != nil {
+			continue
+		}
+		if candidate.value > value {
+			value = candidate.value
+			bestMove = candidate.move
+		}
+		if candidate.alpha > alpha {
+			alpha = candidate.alpha
+		}
+		if candidate.beta < beta {
+			beta = candidate.beta
+		}
+		if alpha > beta {
+			break
+		}
+	}
+
+	return bestMove, nil
+}
+
+func alphaBetaPartition(b board.BitBoard, player board.Player, moves []board.Move, depth uint, alpha int, beta int) (alphaBetaPartitionResult, error) {
 	value := math.MinInt
+	if len(moves) == 0 {
+		return alphaBetaPartitionResult{}, errors.New("Empty move list")
+	}
+
 	bestMove := moves[0]
+
+	ch := make(chan alphaBetaResult, len(moves))
+
 	for _, mv := range moves {
-		candidate := alphaBetaRecursion(Minimizer, b.ApplyMove(mv), player, depth-1, alpha, beta)
-		if candidate > value {
-			value = candidate
-			bestMove = mv
+		// Prevent goroutines from reading alpha/beta while they are concurrently updated.
+		// TODO: use atomic.LoadInt64/atomic.StoreInt64
+		ownedAlpha := alpha
+		ownedBeta := beta
+		go func() {
+			ch <- alphaBetaResult{
+				move:  mv,
+				value: alphaBetaRecursion(Minimizer, b.ApplyMove(mv), player, depth-1, ownedAlpha, ownedBeta),
+			}
+		}()
+	}
+
+	for range len(moves) {
+		candidate := <-ch
+		if candidate.value > value {
+			value = candidate.value
+			bestMove = candidate.move
 		}
 		if value > alpha {
 			alpha = value
@@ -38,7 +104,12 @@ func AlphaBeta(b board.BitBoard, player board.Player, depth uint) (board.Move, e
 		}
 	}
 
-	return bestMove, nil
+	return alphaBetaPartitionResult{
+		move:  bestMove,
+		value: value,
+		alpha: alpha,
+		beta:  beta,
+	}, nil
 }
 
 func alphaBetaRecursion(kind alphaBetaKind, board board.BitBoard, player board.Player, depth uint, alpha int, beta int) int {
