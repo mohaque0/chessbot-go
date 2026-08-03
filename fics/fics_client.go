@@ -1,6 +1,7 @@
 package fics
 
 import (
+	"chessbot-go/board"
 	"fmt"
 	"io"
 	"regexp"
@@ -61,6 +62,8 @@ func readFromFics(src chan string, dst chan FicsMessageReceived) {
 			dst <- FicsReceivedLoggedInAs{Username: m[1]}
 		case enterAsGuestPattern.MatchString(input):
 			dst <- FicsReceivedRequestLogin{}
+		case strings.HasPrefix(cleaned, "Illegal move"):
+			dst <- FicsReceivedIllegalMove{Text: cleaned}
 		case gameEndPattern.MatchString(input):
 			m := gameEndPattern.FindStringSubmatch(input)
 			reason := m[1]
@@ -102,7 +105,18 @@ func sendToFics(src chan FicsMessageSend, dst chan string) {
 			dst <- fmt.Sprintf("play %d", msg.GameID)
 		case FicsSendMove:
 			m := msg.Move
-			dst <- fmt.Sprintf("%c%c%c%c", 'a'+rune(m.SrcX), '1'+rune(m.SrcY), 'a'+rune(m.DstX), '1'+rune(m.DstY))
+			switch m.Kind {
+			case board.KingsideCastle:
+				dst <- "o-o"
+			case board.QueensideCastle:
+				dst <- "o-o-o"
+			default:
+				s := fmt.Sprintf("%c%c%c%c", 'a'+rune(m.SrcX), '1'+rune(m.SrcY), 'a'+rune(m.DstX), '1'+rune(m.DstY))
+				if m.Promote != board.NoPiece {
+					s += "=" + m.Promote.Letter()
+				}
+				dst <- s
+			}
 		case FicsSendSetStyle:
 			dst <- "set style 12"
 		case FicsSendSetNoWrap:

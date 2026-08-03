@@ -28,6 +28,7 @@ func (FicsReceivedRequestLogin) sealed()   {}
 func (FicsReceivedRequestUnknown) sealed() {}
 func (FicsReceivedBoard) sealed()          {}
 func (FicsReceivedGameEnd) sealed()        {}
+func (FicsReceivedIllegalMove) sealed()    {}
 
 var _ FicsMessageReceived = (*FicsReceivedSoughtGame)(nil)
 var _ FicsMessageReceived = (*FicsReceivedLoginPrompt)(nil)
@@ -36,6 +37,7 @@ var _ FicsMessageReceived = (*FicsReceivedRequestLogin)(nil)
 var _ FicsMessageReceived = (*FicsReceivedRequestUnknown)(nil)
 var _ FicsMessageReceived = (*FicsReceivedBoard)(nil)
 var _ FicsMessageReceived = (*FicsReceivedGameEnd)(nil)
+var _ FicsMessageReceived = (*FicsReceivedIllegalMove)(nil)
 
 type FicsReceivedSoughtGame struct {
 	AdIdx           uint
@@ -62,6 +64,10 @@ type FicsReceivedBoard struct {
 	Board    board.BitBoard
 	Mover    board.Player
 	LastMove *board.Move
+}
+
+type FicsReceivedIllegalMove struct {
+	Text string
 }
 
 type GameEndResult uint

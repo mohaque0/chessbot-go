@@ -1,6 +1,7 @@
 package fics
 
 import (
+	"chessbot-go/board"
 	"strings"
 	"testing"
 )
@@ -198,6 +199,74 @@ func TestReadFromFicsGameEnd(t *testing.T) {
 				t.Errorf("Reason = %q, want %q", ge.Reason, tt.wantReason)
 			}
 		})
+	}
+}
+
+func TestReadFromFicsIllegalMove(t *testing.T) {
+	src := make(chan string, 1)
+	src <- "Illegal move (g1f3)"
+	close(src)
+
+	dst := make(chan FicsMessageReceived, 5)
+	readFromFics(src, dst)
+
+	msg := <-dst
+	im, ok := msg.(FicsReceivedIllegalMove)
+	if !ok {
+		t.Fatalf("expected FicsReceivedIllegalMove, got %T", msg)
+	}
+	if im.Text != "Illegal move (g1f3)" {
+		t.Errorf("Text = %q, want %q", im.Text, "Illegal move (g1f3)")
+	}
+}
+
+func TestSendMoveCastling(t *testing.T) {
+	src := make(chan FicsMessageSend, 3)
+	dst := make(chan string, 3)
+
+	src <- FicsSendMove{Move: board.Castle(board.KingsideCastle, board.White)}
+	src <- FicsSendMove{Move: board.Castle(board.QueensideCastle, board.Black)}
+	src <- FicsSendMove{Move: board.MvPromo(0, 6, 0, 7, board.Queen)}
+	close(src)
+
+	sendToFics(src, dst)
+
+	got1 := <-dst
+	if got1 != "o-o" {
+		t.Errorf("kingside castle = %q, want %q", got1, "o-o")
+	}
+	got2 := <-dst
+	if got2 != "o-o-o" {
+		t.Errorf("queenside castle = %q, want %q", got2, "o-o-o")
+	}
+	got3 := <-dst
+	if got3 != "a7a8=Q" {
+		t.Errorf("promotion = %q, want %q", got3, "a7a8=Q")
+	}
+}
+
+func TestParseStyle12InitialPosition(t *testing.T) {
+	line := "<12> rnbqkbnr pppppppp -------- -------- -------- -------- PPPPPPPP RNBQKBNR W -1 1 1 1 1 0 123 White Black 2 5 0 39 39 300 300 1 none (0:00) none 0 0 0"
+	parsed, ok := parseStyle12(line)
+	if !ok {
+		t.Fatal("failed to parse style-12 initial position")
+	}
+
+	expected := board.NewBitBoard()
+
+	for y := 0; y < 8; y++ {
+		for x := 0; x < 8; x++ {
+			pe, eOk := expected.GetPiece(x, y)
+			pp, pOk := parsed.Board.GetPiece(x, y)
+			if eOk != pOk || pe != pp {
+				t.Errorf("mismatch at %c%d: expected %v (ok=%v), got %v (ok=%v)",
+					'a'+rune(x), y+1, pe, eOk, pp, pOk)
+			}
+		}
+	}
+
+	if parsed.Mover != board.White {
+		t.Errorf("mover = %v, want White", parsed.Mover)
 	}
 }
 

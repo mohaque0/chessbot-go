@@ -115,6 +115,11 @@ func FicsGame(depth uint, debugWr io.Writer) game.GameResult {
 				fmt.Printf("Game over: %s\n", resp.gameEnd.Reason)
 				return gameEndToResult(resp.gameEnd)
 			}
+			if resp.illegalMove != nil {
+				fmt.Printf("FICS rejected our move %s: %s\n", mv, resp.illegalMove.Text)
+				fmt.Printf("Our board state:\n%s\n", currentBoard.String())
+				return game.Draw
+			}
 			currentBoard = resp.board.Board
 			mover = resp.board.Mover
 			moveIdx++
@@ -129,6 +134,10 @@ func FicsGame(depth uint, debugWr io.Writer) game.GameResult {
 			if resp.gameEnd != nil {
 				fmt.Printf("Game over: %s\n", resp.gameEnd.Reason)
 				return gameEndToResult(resp.gameEnd)
+			}
+			if resp.illegalMove != nil {
+				fmt.Printf("Unexpected illegal move message: %s\n", resp.illegalMove.Text)
+				continue
 			}
 			currentBoard = resp.board.Board
 			mover = resp.board.Mover
@@ -181,8 +190,9 @@ func waitForGuestConfirm(client *fics.FicsClient) (string, bool) {
 }
 
 type boardOrEnd struct {
-	board   *fics.FicsReceivedBoard
-	gameEnd *fics.FicsReceivedGameEnd
+	board       *fics.FicsReceivedBoard
+	gameEnd     *fics.FicsReceivedGameEnd
+	illegalMove *fics.FicsReceivedIllegalMove
 }
 
 func waitForBoard(client *fics.FicsClient) (boardOrEnd, bool) {
@@ -192,6 +202,8 @@ func waitForBoard(client *fics.FicsClient) (boardOrEnd, bool) {
 			return boardOrEnd{board: &b}, true
 		case fics.FicsReceivedGameEnd:
 			return boardOrEnd{gameEnd: &b}, true
+		case fics.FicsReceivedIllegalMove:
+			return boardOrEnd{illegalMove: &b}, true
 		}
 	}
 	return boardOrEnd{}, false
