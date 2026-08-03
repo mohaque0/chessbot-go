@@ -7,7 +7,10 @@ import (
 	"strings"
 )
 
-var enterAsGuestPattern = regexp.MustCompile(`Press return to enter the server as`)
+var (
+	enterAsGuestPattern = regexp.MustCompile(`Press return to enter the server as`)
+	loggedInAsPattern   = regexp.MustCompile(`Logging you in as "(\w+)"`)
+)
 
 type FicsClient struct {
 	telnet *TelnetClient
@@ -41,19 +44,30 @@ func (c *FicsClient) Close() {
 func readFromFics(src chan string, dst chan FicsMessageReceived) {
 	defer close(dst)
 	for input := range src {
+		// Strip the "fics% " prompt if it appears at the start of the line.
+		// The server sends "fics% " as a command-line prompt; it may be
+		// concatenated with real data in the same read buffer.
+		cleaned := strings.TrimLeft(input, " ")
+		if strings.HasPrefix(cleaned, "fics%") {
+			cleaned = strings.TrimLeft(cleaned[5:], " ")
+		}
+
 		switch {
 		case strings.Contains(input, "login:"):
 			dst <- FicsReceivedLoginPrompt{}
+		case loggedInAsPattern.MatchString(input):
+			m := loggedInAsPattern.FindStringSubmatch(input)
+			dst <- FicsReceivedLoggedInAs{Username: m[1]}
 		case enterAsGuestPattern.MatchString(input):
 			dst <- FicsReceivedRequestLogin{}
-		case strings.Contains(input, "<12>"):
-			if b, ok := parseStyle12(input); ok {
+		case strings.Contains(cleaned, "<12>"):
+			if b, ok := parseStyle12(cleaned); ok {
 				dst <- b
 			} else {
 				dst <- FicsReceivedRequestUnknown{Text: input}
 			}
 		default:
-			if sg, ok := parseSoughtLine(input); ok {
+			if sg, ok := parseSoughtLine(cleaned); ok {
 				dst <- sg
 			} else {
 				dst <- FicsReceivedRequestUnknown{Text: input}

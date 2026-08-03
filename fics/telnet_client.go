@@ -53,24 +53,28 @@ func readRoutine(src net.Conn, dst chan string, debugWr io.Writer) {
 				debugWr.Write(cleaned)
 			}
 			accum.Write(cleaned)
-			// Flush complete \r\n-terminated lines immediately.
+			// Flush complete lines. FICS uses \n\r (not standard \r\n),
+			// so split on \n and strip any \r.
 			for {
 				content := accum.String()
-				idx := strings.Index(content, "\r\n")
+				idx := strings.IndexByte(content, '\n')
 				if idx < 0 {
 					break
 				}
-				dst <- content[:idx+2]
+				line := strings.ReplaceAll(content[:idx], "\r", "")
+				rest := content[idx+1:]
+				rest = strings.TrimLeft(rest, "\r")
+				dst <- line
 				accum.Reset()
-				accum.WriteString(content[idx+2:])
+				accum.WriteString(rest)
 			}
 		}
 		if err != nil {
 			if netErr, ok := err.(net.Error); ok && netErr.Timeout() {
 				// Timeout — flush any partial data (handles prompts
-				// like "login: " that don't end with \r\n).
+				// like "login: " that don't end with \n).
 				if accum.Len() > 0 {
-					dst <- accum.String()
+					dst <- strings.ReplaceAll(accum.String(), "\r", "")
 					accum.Reset()
 				}
 				continue

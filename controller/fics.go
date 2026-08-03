@@ -31,14 +31,15 @@ func FicsGame(depth uint, debugWr io.Writer) game.GameResult {
 	fmt.Println("Sent guest login.")
 
 	// Wait for "Press return to enter the server as ..." prompt.
-	if !waitForGuestConfirm(client) {
+	username, ok := waitForGuestConfirm(client)
+	if !ok {
 		fmt.Println("Did not receive guest confirmation prompt.")
 		return game.Draw
 	}
 
 	// Press return to enter.
 	client.Send <- fics.FicsSendText("")
-	fmt.Println("Logged in as guest.")
+	fmt.Printf("Logged in as %s\n", username)
 
 	// Configure output format.
 	client.Send <- fics.FicsSendSetStyle{}
@@ -153,14 +154,17 @@ func waitForLoginPrompt(client *fics.FicsClient) bool {
 	return false
 }
 
-func waitForGuestConfirm(client *fics.FicsClient) bool {
+func waitForGuestConfirm(client *fics.FicsClient) (string, bool) {
+	username := ""
 	for msg := range client.Recv {
-		switch msg.(type) {
+		switch m := msg.(type) {
+		case fics.FicsReceivedLoggedInAs:
+			username = m.Username
 		case fics.FicsReceivedRequestLogin:
-			return true
+			return username, true
 		}
 	}
-	return false
+	return "", false
 }
 
 func waitForBoard(client *fics.FicsClient) (fics.FicsReceivedBoard, bool) {
@@ -184,7 +188,7 @@ func collectSoughtGames(client *fics.FicsClient) []fics.FicsReceivedSoughtGame {
 		case fics.FicsReceivedRequestUnknown:
 			// "N ads displayed." marks the end of the sought list.
 			// Skip all other unknown messages (MOTD, admin tells, etc.).
-			if strings.Contains(sg.Text, "ads displayed") {
+			if strings.Contains(sg.Text, "ad displayed") || strings.Contains(sg.Text, "ads displayed") {
 				return candidates
 			}
 		}

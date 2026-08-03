@@ -1,0 +1,325 @@
+
+             _       __     __                             __      
+            | |     / /__  / /________  ____ ___  ___     / /_____ 
+            | | /| / / _ \/ / ___/ __ \/ __ `__ \/ _ \   / __/ __ \
+            | |/ |/ /  __/ / /__/ /_/ / / / / / /  __/  / /_/ /_/ /
+            |__/|__/\___/_/\___/\____/_/ /_/ /_/\___/   \__/\____/ 
+       ^^__                  _____________________                 _  _  _ 
+      /  - \_               / ____/  _/ ____/ ___/   _            | || || |
+    <|    __<              / /_   / // /    \__ \   (_)           |_______|
+    <|    \               / __/ _/ // /___ ___/ /  _              \__ ___ /
+    <|     \             /_/   /___/\____//____/  (_)              |___|_|
+    <|______\                                                      |_|___|
+     _|____|_        ======================================        |___|_|
+    (________)         freechess.org  ----  54.39.129.129         (_______)
+    /________\       ======================================       /_______\ 
+                       (Login screen designed by Alefith)
+
+   ****** Welcome to the Free Internet Chess Server at freechess.org ******
+
+Webpage: http://www.freechess.org
+Head admin : mattuc   Complaints to : complaints@freechess.org
+Server location: freechess.org   Server version : 1.25.20
+
+      If you are not a registered player, enter guest or a unique ID.
+             (If your return key does not work, use cntrl-J)
+
+login: 
+Logging you in as "GuestFRZF"; you may use this name to play unrated games.
+(After logging in, do "help register" for more info on how to register.)
+
+Press return to enter the server as "GuestFRZF":
+
+
+**** Starting FICS session as GuestFRZF(U) ****
+------------------------------------------------------------------------------
+                         *** Message Of The Day ***
+
+
+Today's Scheduled Events:
+    0730: The Daily 5 0
+    1200: Monday's scheduled long blitz
+    1430: Lightning Marathon
+    1600: ChessBattle tournament
+    2200: The Nightly 5 0
+
+
+To join a scheduled tournament, join channel 49 (+channel 49)
+And be there for the scheduled start.
+
+For a complete tournament schedule, type "td help schedule"
+Regular tournaments are run all day, "td set tourneyinfo on" to see them.
+
+All times are server times.
+To check the current server time, use "date".
+==============================================================================
+FICS web page: http://www.freechess.org   - add a link to FICS from your page
+==============================================================================
+
+
+
+Newcomers:
+  type 'help intro_basics' for some basic server commands and files.
+  type 'help chan_4' to learn how to ask for help on the help channel.
+  type 'help register' to learn how to get a registered account.
+  type 'help interfaces' for information on getting a graphical interface.
+  type 'showadmins' to see which admins (FICS administrators) are logged on.
+  type 'set shout 1' to see shouts (only registered users may shout).
+  type 'set seek 0' if receiving ads for matches bothers you.
+  type 'set open 0' if you do not want to be challenged to a chess match.
+  type 'set silence 1' if you wish to have quiet play.
+  type 'getgame' to get a blitz chess game.
+
+Special channels for guests:
+  type 'tell 4 <message>' if you need help
+  type 'tell 53 <message>' to chat with other users
+
+  A quick guide is available on our web page: http://www.freechess.org
+   as are facilities to register, connect via a java interface or download
+   interfaces, so that you get a graphical board and can use the mouse.
+
+NOTE:  Guests with foul or abusive names may be 'nuked' without warning!!!
+
+fics% Style 12 set.
+fics% nowrap set.
+fics%   4 2478 xvi(C)             30   5 unrated standard               0-9999 f
+  7 ++++ GuestNPXS           5   0 unrated blitz                  0-9999 
+ 26 1764 marquisce(C)        2  12 unrated blitz                  0-9999 
+ 30 2024 GriffySr(C)         2  12 unrated blitz                  0-9999 
+4 ads displayed.
+fics% 
+ROBOadmin(*)(TD) tells you: Welcome to FICS - the Free Internet Chess Server. Please visit our homepage at http://www.freechess.org. From there you can register or download a graphical interface. You can get help by typing "help intro_playing". Or just ask a SR or admin - use "showsr" or "showa", then "tell <name> My question is..."
+fics% 
+Creating: GuestFRZF (++++) GuestNPXS (++++) unrated blitz 5 0
+{Game 26 (GuestFRZF vs. GuestNPXS) Creating unrated blitz match.}
+
+<12> rnbqkbnr pppppppp -------- -------- -------- -------- PPPPPPPP RNBQKBNR W -1 1 1 1 1 0 26 GuestFRZF GuestNPXS 1 5 0 39 39 300 300 1 none (0:00) none 0 0 0
+fics% 
+You have been added to the mute list by adminBOT.
+fics% 
+adminBOT(*)(TD) tells you: You have been muted because all unregistered guests are currently prevented from making tells to public channels. If you need help, please send a tell directly to an available admin (use "showa") or Service Representative (use "showsr").
+fics% 
+<12> rnbqkbnr pppppppp -------- -------- -------- -P------ P-PPPPPP RNBQKBNR B -1 1 1 1 1 0 26 GuestFRZF GuestNPXS -1 5 0 39 39 300 300 1 P/b2-b3 (0:00) b3 0 0 0
+fics% 
+<12> rnbqkbnr pppp-ppp -------- ----p--- -------- -P------ P-PPPPPP RNBQKBNR W 4 1 1 1 1 0 26 GuestFRZF GuestNPXS 1 5 0 39 39 300 300 2 P/e7-e5 (0:00) e5 0 1 0
+fics% 
+<12> rnbqkbnr pppp-ppp -------- ----p--- -------- -PN----- P-PPPPPP R-BQKBNR B -1 1 1 1 1 1 26 GuestFRZF GuestNPXS -1 5 0 39 39 300 300 2 N/b1-c3 (0:00) Nc3 0 1 0
+fics% 
+<12> rnbqkb-r pppp-ppp -----n-- ----p--- -------- -PN----- P-PPPPPP R-BQKBNR W -1 1 1 1 1 2 26 GuestFRZF GuestNPXS 1 5 0 39 39 300 297 3 N/g8-f6 (0:03) Nf6 0 1 107
+fics% 
+<12> rnbqkb-r pppp-ppp -----n-- ----p--- -------- -PN----N P-PPPPPP R-BQKB-R B -1 1 1 1 1 3 26 GuestFRZF GuestNPXS -1 5 0 39 39 299 297 3 N/g1-h3 (0:00) Nh3 0 1 0
+fics% 
+<12> rnbqk--r pppp-ppp ---b-n-- ----p--- -------- -PN----N P-PPPPPP R-BQKB-R W -1 1 1 1 1 4 26 GuestFRZF GuestNPXS 1 5 0 39 39 299 294 4 B/f8-d6 (0:03) Bd6 0 1 155
+fics% 
+<12> rnbqk--r pppp-ppp ---b-n-- ----p--- -------- -P-----N P-PPPPPP RNBQKB-R B -1 1 1 1 1 5 26 GuestFRZF GuestNPXS -1 5 0 39 39 299 294 4 N/c3-b1 (0:00) Nb1 0 1 0
+fics% 
+<12> rnbqk--r pppp-ppp -----n-- --b-p--- -------- -P-----N P-PPPPPP RNBQKB-R W -1 1 1 1 1 6 26 GuestFRZF GuestNPXS 1 5 0 39 39 299 291 5 B/d6-c5 (0:03) Bc5 0 1 193
+fics% 
+<12> rnbqk--r pppp-ppp -----n-- --b-p--- -------- -P--P--N P-PP-PPP RNBQKB-R B -1 1 1 1 1 0 26 GuestFRZF GuestNPXS -1 5 0 39 39 298 291 5 P/e2-e3 (0:01) e3 0 1 0
+fics% 
+<12> rnbqk--r ppp--ppp ---p-n-- --b-p--- -------- -P--P--N P-PP-PPP RNBQKB-R W -1 1 1 1 1 0 26 GuestFRZF GuestNPXS 1 5 0 39 39 298 288 6 P/d7-d6 (0:03) d6 0 1 177
+fics% 
+<12> rnbqk--r ppp--ppp ---p-n-- --b-p--- -------- -P--PQ-N P-PP-PPP RNB-KB-R B -1 1 1 1 1 1 26 GuestFRZF GuestNPXS -1 5 0 39 39 298 288 6 Q/d1-f3 (0:01) Qf3 0 1 0
+fics% 
+<12> rnbqk--r -pp--ppp p--p-n-- --b-p--- -------- -P--PQ-N P-PP-PPP RNB-KB-R W -1 1 1 1 1 0 26 GuestFRZF GuestNPXS 1 5 0 39 39 298 286 7 P/a7-a6 (0:01) a6 0 1 86
+fics% 
+<12> rnbqk--r -pp--ppp p--p-n-- --b-p--- -------- -P--PQ-N PBPP-PPP RN--KB-R B -1 1 1 1 1 1 26 GuestFRZF GuestNPXS -1 5 0 39 39 297 286 7 B/c1-b2 (0:01) Bb2 0 1 0
+fics% 
+<12> rn-qk--r -pp--ppp p--pbn-- --b-p--- -------- -P--PQ-N PBPP-PPP RN--KB-R W -1 1 1 1 1 2 26 GuestFRZF GuestNPXS 1 5 0 39 39 297 284 8 B/c8-e6 (0:02) Be6 0 1 103
+fics% 
+<12> rn-qk--r -Qp--ppp p--pbn-- --b-p--- -------- -P--P--N PBPP-PPP RN--KB-R B -1 1 1 1 1 0 26 GuestFRZF GuestNPXS -1 5 0 39 38 295 284 8 Q/f3-b7 (0:01) Qxb7 0 1 0
+fics% 
+<12> r--qk--r -Qpn-ppp p--pbn-- --b-p--- -------- -P--P--N PBPP-PPP RN--KB-R W -1 1 1 1 1 1 26 GuestFRZF GuestNPXS 1 5 0 39 38 295 281 9 N/b8-d7 (0:03) Nbd7 0 1 106
+fics% 
+<12> r--qk--r -Qpn-ppp p--pbn-- --b-p--- --B----- -P--P--N PBPP-PPP RN--K--R B -1 1 1 1 1 2 26 GuestFRZF GuestNPXS -1 5 0 39 38 294 281 9 B/f1-c4 (0:01) Bc4 0 1 0
+fics% 
+<12> r--qk--r -Qpn-ppp p--p-n-- --b-p--- --b----- -P--P--N PBPP-PPP RN--K--R W -1 1 1 1 1 0 26 GuestFRZF GuestNPXS 1 5 0 36 38 294 275 10 B/e6-c4 (0:06) Bxc4 0 1 106
+fics% 
+<12> r--qk--r -Qpn-ppp p--p-n-- --b-p--- --P----- ----P--N PBPP-PPP RN--K--R B -1 1 1 1 1 0 26 GuestFRZF GuestNPXS -1 5 0 36 35 293 275 10 P/b3-c4 (0:01) bxc4 0 1 0
+fics% 
+<12> r--qk--r -Qp--ppp pn-p-n-- --b-p--- --P----- ----P--N PBPP-PPP RN--K--R W -1 1 1 1 1 1 26 GuestFRZF GuestNPXS 1 5 0 36 35 293 268 11 N/d7-b6 (0:07) Nb6 0 1 83
+fics% 
+<12> r--qk--r -Qp--ppp pn-p-n-- --b-B--- --P----- ----P--N P-PP-PPP RN--K--R B -1 1 1 1 1 0 26 GuestFRZF GuestNPXS -1 5 0 36 34 293 268 11 B/b2-e5 (0:01) Bxe5 0 1 0
+fics% 
+<12> r--qk--r -Qp--ppp pn---n-- --b-p--- --P----- ----P--N P-PP-PPP RN--K--R W -1 1 1 1 1 0 26 GuestFRZF GuestNPXS 1 5 0 33 34 293 266 12 P/d6-e5 (0:02) dxe5 0 1 333
+fics% 
+<12> r--qk--r --p--ppp pnQ--n-- --b-p--- --P----- ----P--N P-PP-PPP RN--K--R B -1 1 1 1 1 1 26 GuestFRZF GuestNPXS -1 5 0 33 34 292 266 12 Q/b7-c6 (0:00) Qc6+ 0 1 0
+fics% 
+<12> r--qk--r --pn-ppp p-Q--n-- --b-p--- --P----- ----P--N P-PP-PPP RN--K--R W -1 1 1 1 1 2 26 GuestFRZF GuestNPXS 1 5 0 33 34 292 263 13 N/b6-d7 (0:03) Nbd7 0 1 87
+fics% 
+<12> r--qk--r --pn-ppp p-Q--n-- --b-p--- --P--P-- ----P--N P-PP--PP RN--K--R B 5 1 1 1 1 0 26 GuestFRZF GuestNPXS -1 5 0 33 34 292 263 13 P/f2-f4 (0:01) f4 0 1 0
+fics% 
+<12> r--qk--r --pn-ppp p-Q--n-- --b----- --P--p-- ----P--N P-PP--PP RN--K--R W -1 1 1 1 1 0 26 GuestFRZF GuestNPXS 1 5 0 32 34 292 262 14 P/e5-f4 (0:01) exf4 0 1 118
+fics% 
+<12> r--qk--r --pn-ppp p-Q--n-- --b----- --P--p-- ----P--N P-PP--PP RN---K-R B -1 0 0 1 1 1 26 GuestFRZF GuestNPXS -1 5 0 32 34 291 262 14 K/e1-f1 (0:01) Kf1 0 1 0
+fics% 
+<12> r--q-rk- --pn-ppp p-Q--n-- --b----- --P--p-- ----P--N P-PP--PP RN---K-R W -1 0 0 0 0 2 26 GuestFRZF GuestNPXS 1 5 0 32 34 291 256 15 o-o (0:06) O-O 0 1 120
+fics% 
+<12> r--q-rk- --pn-ppp p-Q--n-- --b----- --P--p-- ----P--N P-PPK-PP RN-----R B -1 0 0 0 0 3 26 GuestFRZF GuestNPXS -1 5 0 32 34 290 256 15 K/f1-e2 (0:01) Ke2 0 1 0
+fics% 
+<12> r--qr-k- --pn-ppp p-Q--n-- --b----- --P--p-- ----P--N P-PPK-PP RN-----R W -1 0 0 0 0 4 26 GuestFRZF GuestNPXS 1 5 0 32 34 290 249 16 R/f8-e8 (0:07) Re8 0 1 100
+fics% 
+<12> r--qr-k- --pn-ppp p-Q--n-- --b----- --P--p-- ----P--N P-PP--PP RN---K-R B -1 0 0 0 0 5 26 GuestFRZF GuestNPXS -1 5 0 32 34 290 249 16 K/e2-f1 (0:01) Kf1 0 1 0
+fics% 
+<12> r--qr-k- --pn-ppp p-Q----- --b----- --P-np-- ----P--N P-PP--PP RN---K-R W -1 0 0 0 0 6 26 GuestFRZF GuestNPXS 1 5 0 32 34 290 248 17 N/f6-e4 (0:01) Ne4 0 1 278
+fics% 
+<12> r--qr-k- --pn-ppp p-Q----- --b----- --P-nN-- ----P--- P-PP--PP RN---K-R B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 32 33 289 248 17 N/h3-f4 (0:01) Nxf4 0 1 0
+fics% 
+<12> r--qr-k- --pn-ppp pbQ----- -------- --P-nN-- ----P--- P-PP--PP RN---K-R W -1 0 0 0 0 1 26 GuestFRZF GuestNPXS 1 5 0 32 33 289 238 18 B/c5-b6 (0:10) Bb6 0 1 235
+fics% 
+<12> r--qr-k- --pn-ppp pbQ----- -------- --P-nN-- ---PP--- P-P---PP RN---K-R B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 32 33 288 238 18 P/d2-d3 (0:01) d3 0 1 0
+fics% 
+<12> r--qr-k- --pn-ppp pbQ----- --n----- --P--N-- ---PP--- P-P---PP RN---K-R W -1 0 0 0 0 1 26 GuestFRZF GuestNPXS 1 5 0 32 33 288 233 19 N/e4-c5 (0:05) Nec5 0 1 316
+fics% 
+<12> r--qr-k- --pn-ppp pbQ----- --nN---- --P----- ---PP--- P-P---PP RN---K-R B -1 0 0 0 0 2 26 GuestFRZF GuestNPXS -1 5 0 32 33 288 233 19 N/f4-d5 (0:01) Nd5 0 1 0
+fics% 
+<12> r---r-k- --pn-ppp pbQ----- --nN---- --P----q ---PP--- P-P---PP RN---K-R W -1 0 0 0 0 3 26 GuestFRZF GuestNPXS 1 5 0 32 33 288 227 20 Q/d8-h4 (0:07) Qh4 0 1 113
+fics% 
+<12> r---r-k- --pn-ppp pbQ----- --nN---- --P----q ---PP-P- P-P----P RN---K-R B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 32 33 287 227 20 P/g2-g3 (0:01) g3 0 1 0
+fics% 
+<12> r---r-k- --pn-ppp pbQ----- --nN---- --P----- ---PP-Pq P-P----P RN---K-R W -1 0 0 0 0 1 26 GuestFRZF GuestNPXS 1 5 0 32 33 287 225 21 Q/h4-h3 (0:02) Qh3+ 0 1 75
+fics% 
+<12> r---r-k- --pn-ppp pbQ----- --nN---- --P----- ---PP-Pq P-P----P RN----KR B -1 0 0 0 0 2 26 GuestFRZF GuestNPXS -1 5 0 32 33 286 225 21 K/f1-g1 (0:00) Kg1 0 1 0
+fics% 
+<12> r---r-k- --p--ppp pbQ----- --nNn--- --P----- ---PP-Pq P-P----P RN----KR W -1 0 0 0 0 3 26 GuestFRZF GuestNPXS 1 5 0 32 33 286 211 22 N/d7-e5 (0:14) Ne5 0 1 87
+fics% 
+<12> r---r-k- --p-Nppp pbQ----- --n-n--- --P----- ---PP-Pq P-P----P RN----KR B -1 0 0 0 0 4 26 GuestFRZF GuestNPXS -1 5 0 32 33 286 211 22 N/d5-e7 (0:01) Ne7+ 0 1 0
+fics% 
+<12> r---r--k --p-Nppp pbQ----- --n-n--- --P----- ---PP-Pq P-P----P RN----KR W -1 0 0 0 0 5 26 GuestFRZF GuestNPXS 1 5 0 32 33 286 201 23 K/g8-h8 (0:10) Kh8 0 1 82
+fics% 
+<12> r---r--k --p-Nppp pb------ --nQn--- --P----- ---PP-Pq P-P----P RN----KR B -1 0 0 0 0 6 26 GuestFRZF GuestNPXS -1 5 0 32 33 285 201 23 Q/c6-d5 (0:00) Qd5 0 1 0
+fics% 
+<12> r---r--k --p-Nppp pb----n- --nQ---- --P----- ---PP-Pq P-P----P RN----KR W -1 0 0 0 0 7 26 GuestFRZF GuestNPXS 1 5 0 32 33 285 184 24 N/e5-g6 (0:17) Ng6 0 1 135
+fics% 
+<12> r---r--k --p--ppp pb----N- --nQ---- --P----- ---PP-Pq P-P----P RN----KR B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 32 30 285 184 24 N/e7-g6 (0:01) Nxg6+ 0 1 0
+fics% 
+<12> r---r--k --p---pp pb----p- --nQ---- --P----- ---PP-Pq P-P----P RN----KR W -1 0 0 0 0 0 26 GuestFRZF GuestNPXS 1 5 0 29 30 285 180 25 P/f7-g6 (0:04) fxg6 0 1 83
+fics% 
+<12> r---r--k --p---pp pb----p- --nQ---- --PP---- ----P-Pq P-P----P RN----KR B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 29 30 284 180 25 P/d3-d4 (0:00) d4 0 1 0
+fics% 
+<12> r---r--k --p---pp pb----p- ---Q---- --PPn--- ----P-Pq P-P----P RN----KR W -1 0 0 0 0 1 26 GuestFRZF GuestNPXS 1 5 0 29 30 284 177 26 N/c5-e4 (0:04) Ne4 0 1 134
+fics% 
+<12> Q---r--k --p---pp pb----p- -------- --PPn--- ----P-Pq P-P----P RN----KR B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 29 25 284 177 26 Q/d5-a8 (0:00) Qxa8 0 1 0
+fics% 
+<12> r------k --p---pp pb----p- -------- --PPn--- ----P-Pq P-P----P RN----KR W -1 0 0 0 0 0 26 GuestFRZF GuestNPXS 1 5 0 20 25 284 174 27 R/e8-a8 (0:02) Rxa8 0 1 87
+fics% 
+<12> r------k --p---pp pb----p- -------- --PPn--- N---P-Pq P-P----P R-----KR B -1 0 0 0 0 1 26 GuestFRZF GuestNPXS -1 5 0 20 25 284 174 27 N/b1-a3 (0:00) Na3 0 1 0
+fics% 
+<12> r------k --p---pp pb----p- -------- --PP---- N---P-Pq P-Pn---P R-----KR W -1 0 0 0 0 2 26 GuestFRZF GuestNPXS 1 5 0 20 25 284 165 28 N/e4-d2 (0:09) Nd2 0 1 101
+fics% 
+<12> r------k --p---pp pb----p- -------- --PP---- N---P-Pq P-Pn-K-P R------R B -1 0 0 0 0 3 26 GuestFRZF GuestNPXS -1 5 0 20 25 284 165 28 K/g1-f2 (0:00) Kf2 0 1 0
+fics% 
+<12> r------k --p---pp pb----p- -----q-- --PP---- N---P-P- P-Pn-K-P R------R W -1 0 0 0 0 4 26 GuestFRZF GuestNPXS 1 5 0 20 25 284 161 29 Q/h3-f5 (0:05) Qf5+ 0 1 95
+fics% 
+<12> r------k --p---pp pb----p- -----q-- --PP---- N---P-P- P-Pn---P R---K--R B -1 0 0 0 0 5 26 GuestFRZF GuestNPXS -1 5 0 20 25 284 161 29 K/f2-e1 (0:00) Ke1 0 1 0
+fics% 
+<12> r------k --p---pp pb----p- -----q-- --PP---- N---PnP- P-P----P R---K--R W -1 0 0 0 0 6 26 GuestFRZF GuestNPXS 1 5 0 20 25 284 159 30 N/d2-f3 (0:02) Nf3+ 0 1 88
+fics% 
+<12> r------k --p---pp pb----p- -----q-- --PP---- N---PnP- P-P----P R--K---R B -1 0 0 0 0 7 26 GuestFRZF GuestNPXS -1 5 0 20 25 283 159 30 K/e1-d1 (0:00) Kd1 0 1 0
+fics% 
+<12> r------k --p---pp pb----p- -------- --PP---- N---PnPq P-P----P R--K---R W -1 0 0 0 0 8 26 GuestFRZF GuestNPXS 1 5 0 20 25 283 151 31 Q/f5-h3 (0:07) Qh3 0 1 335
+fics% 
+<12> r------k --p---pp pb----p- -------- --PP---- N---PnPq P-P----P R-K----R B -1 0 0 0 0 9 26 GuestFRZF GuestNPXS -1 5 0 20 25 283 151 31 K/d1-c1 (0:00) Kc1 0 1 0
+fics% 
+<12> r------k --p---pp pb----p- -------- --PP---- N---PnP- P-P---qP R-K----R W -1 0 0 0 0 10 26 GuestFRZF GuestNPXS 1 5 0 20 25 283 149 32 Q/h3-g2 (0:02) Qg2 0 1 96
+fics% 
+<12> r------k --p---pp pb----p- -------- --PP---- N---PnP- PKP---qP R------R B -1 0 0 0 0 11 26 GuestFRZF GuestNPXS -1 5 0 20 25 283 149 32 K/c1-b2 (0:00) Kb2 0 1 0
+fics% 
+<12> r------k --p---pp pb----p- -------- --PP---- N---PnP- PKPq---P R------R W -1 0 0 0 0 12 26 GuestFRZF GuestNPXS 1 5 0 20 25 283 141 33 Q/g2-d2 (0:08) Qd2 0 1 88
+fics% 
+<12> r------k --p---pp pb----p- -------- --PP---- ----PnP- PKPq---P RN-----R B -1 0 0 0 0 13 26 GuestFRZF GuestNPXS -1 5 0 20 25 283 141 33 N/a3-b1 (0:00) Nb1 0 1 0
+fics% 
+<12> r------k --p---pp pb----p- -------- -qPP---- ----PnP- PKP----P RN-----R W -1 0 0 0 0 14 26 GuestFRZF GuestNPXS 1 5 0 20 25 283 138 34 Q/d2-b4 (0:03) Qb4+ 0 1 158
+fics% 
+<12> r------k --p---pp pb----p- -------- -qPP---- ----PnP- P-P----P RNK----R B -1 0 0 0 0 15 26 GuestFRZF GuestNPXS -1 5 0 20 25 283 138 34 K/b2-c1 (0:00) Kc1 0 1 0
+fics% 
+<12> r------k --p---pp pb----p- -------- -qPP---- ----P-P- P-P----P RNK-n--R W -1 0 0 0 0 16 26 GuestFRZF GuestNPXS 1 5 0 20 25 283 132 35 N/f3-e1 (0:06) Ne1 0 1 103
+fics% 
+<12> r------k --p---pp pb----p- --P----- -q-P---- ----P-P- P-P----P RNK-n--R B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 20 25 282 132 35 P/c4-c5 (0:00) c5 0 1 0
+fics% 
+<12> r------k --p---pp p-----p- b-P----- -q-P---- ----P-P- P-P----P RNK-n--R W -1 0 0 0 0 1 26 GuestFRZF GuestNPXS 1 5 0 20 25 282 120 36 B/b6-a5 (0:12) Ba5 0 1 91
+fics% 
+<12> r------k --p---pp p-----p- b-P----- -q-P---- --P-P-P- P------P RNK-n--R B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 20 25 282 120 36 P/c2-c3 (0:00) c3 0 1 0
+fics% 
+<12> r------k --p---pp p-----p- b-P----- q--P---- --P-P-P- P------P RNK-n--R W -1 0 0 0 0 1 26 GuestFRZF GuestNPXS 1 5 0 20 25 282 116 37 Q/b4-a4 (0:05) Qa4 0 1 356
+fics% 
+<12> r------k --p---pp p-----p- b-P----- q--P---- --P-P-P- P------P RNK-R--- B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 20 22 282 116 37 R/h1-e1 (0:00) Rxe1 0 1 0
+fics% 
+<12> r------k --p---pp p-----p- b-P----- --qP---- --P-P-P- P------P RNK-R--- W -1 0 0 0 0 1 26 GuestFRZF GuestNPXS 1 5 0 20 22 282 108 38 Q/a4-c4 (0:08) Qc4 0 1 386
+fics% 
+<12> r------k --p---pp p-----p- b-P----- --qP---- --P-P-P- PK-----P RN--R--- B -1 0 0 0 0 2 26 GuestFRZF GuestNPXS -1 5 0 20 22 282 108 38 K/c1-b2 (0:00) Kb2 0 1 0
+fics% 
+<12> -r-----k --p---pp p-----p- b-P----- --qP---- --P-P-P- PK-----P RN--R--- W -1 0 0 0 0 3 26 GuestFRZF GuestNPXS 1 5 0 20 22 282 104 39 R/a8-b8 (0:03) Rb8+ 0 1 277
+fics% 
+<12> -r-----k --p---pp p-----p- b-P----- --qP---- --P-P-P- P-K----P RN--R--- B -1 0 0 0 0 4 26 GuestFRZF GuestNPXS -1 5 0 20 22 282 104 39 K/b2-c2 (0:00) Kc2 0 1 0
+fics% 
+<12> -r-----k ------pp p-p---p- b-P----- --qP---- --P-P-P- P-K----P RN--R--- W -1 0 0 0 0 0 26 GuestFRZF GuestNPXS 1 5 0 20 22 282 92 40 P/c7-c6 (0:13) c6 0 1 296
+fics% 
+<12> -r-----k ------pp p-p---p- b-P----- --qP---- P-P-P-P- --K----P RN--R--- B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 20 22 281 92 40 P/a2-a3 (0:00) a3 0 1 0
+fics% 
+<12> -----r-k ------pp p-p---p- b-P----- --qP---- P-P-P-P- --K----P RN--R--- W -1 0 0 0 0 1 26 GuestFRZF GuestNPXS 1 5 0 20 22 281 86 41 R/b8-f8 (0:05) Rf8 0 1 117
+fics% 
+<12> -----r-k ------pp p-p---p- b-P----- --qP---P P-P-P-P- --K----- RN--R--- B 7 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 20 22 281 86 41 P/h2-h4 (0:00) h4 0 1 0
+fics% 
+<12> -------k ------pp p-p---p- b-P----- --qP---P P-P-P-P- --K--r-- RN--R--- W -1 0 0 0 0 1 26 GuestFRZF GuestNPXS 1 5 0 20 22 281 85 42 R/f8-f2 (0:02) Rf2+ 0 1 86
+fics% 
+<12> -------k ------pp p-p---p- b-P----- --qP---P P-P-P-P- -----r-- RNK-R--- B -1 0 0 0 0 2 26 GuestFRZF GuestNPXS -1 5 0 20 22 281 85 42 K/c2-c1 (0:00) Kc1 0 1 0
+fics% 
+<12> -------k ------pp p-p---p- --P----- --qP---P P-b-P-P- -----r-- RNK-R--- W -1 0 0 0 0 0 26 GuestFRZF GuestNPXS 1 5 0 19 22 281 79 43 B/a5-c3 (0:05) Bxc3 0 1 87
+fics% 
+<12> -------k ------pp p-p---p- --P----- --qP---P P-b-P-P- ---N-r-- R-K-R--- B -1 0 0 0 0 1 26 GuestFRZF GuestNPXS -1 5 0 19 22 281 79 43 N/b1-d2 (0:00) Nd2 0 1 0
+fics% 
+<12> -------k ------pp p-p---p- --P----- q--P---P P-b-P-P- ---N-r-- R-K-R--- W -1 0 0 0 0 2 26 GuestFRZF GuestNPXS 1 5 0 19 22 281 74 44 Q/c4-a4 (0:05) Qa4 0 1 375
+fics% 
+<12> -------k ------pp p-p---p- --P----- q--P---P P-b-P-P- R--N-r-- --K-R--- B -1 0 0 0 0 3 26 GuestFRZF GuestNPXS -1 5 0 19 22 281 74 44 R/a1-a2 (0:00) Ra2 0 1 0
+fics% 
+<12> -------k ------pp p-p---p- --P----- q--P---P P---P-P- R--b-r-- --K-R--- W -1 0 0 0 0 0 26 GuestFRZF GuestNPXS 1 5 0 16 22 281 62 45 B/c3-d2 (0:12) Bxd2+ 0 1 207
+fics% 
+<12> -------k ------pp p-p---p- --P----- q--P---P P---P-P- ---R-r-- --K-R--- B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 16 19 280 62 45 R/a2-d2 (0:00) Rxd2 0 1 0
+fics% 
+<12> -------k ------pp p-p---p- --P----- ---P---P q---P-P- ---R-r-- --K-R--- W -1 0 0 0 0 0 26 GuestFRZF GuestNPXS 1 5 0 15 19 280 59 46 Q/a4-a3 (0:03) Qxa3+ 0 1 242
+fics% 
+<12> -------k ------pp p-p---p- --P----- ---P---P q---P-P- ---R-r-- ---KR--- B -1 0 0 0 0 1 26 GuestFRZF GuestNPXS -1 5 0 15 19 280 59 46 K/c1-d1 (0:00) Kd1 0 1 0
+fics% 
+<12> -------k ------pp p-p---p- --P----- ---P---P ----P-P- ---R-r-- q--KR--- W -1 0 0 0 0 2 26 GuestFRZF GuestNPXS 1 5 0 15 19 280 55 47 Q/a3-a1 (0:04) Qa1+ 0 1 252
+fics% 
+<12> -------k ------pp p-p---p- --P----- ---P---P ----P-P- --KR-r-- q---R--- B -1 0 0 0 0 3 26 GuestFRZF GuestNPXS -1 5 0 15 19 280 55 47 K/d1-c2 (0:00) Kc2 0 1 0
+fics% 
+<12> -------k ------pp p-p---p- --P----- ---P---P ----P-P- --Kr---- q---R--- W -1 0 0 0 0 0 26 GuestFRZF GuestNPXS 1 5 0 10 19 280 50 48 R/f2-d2 (0:05) Rxd2+ 0 1 162
+fics% 
+<12> -------k ------pp p-p---p- --P----- ---P---P ----P-P- ---K---- q---R--- B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 10 14 280 50 48 K/c2-d2 (0:00) Kxd2 0 1 0
+fics% 
+<12> -------k ------pp p-p---p- --P----- ---P---P ----P-P- q--K---- ----R--- W -1 0 0 0 0 1 26 GuestFRZF GuestNPXS 1 5 0 10 14 280 48 49 Q/a1-a2 (0:02) Qa2+ 0 1 106
+fics% 
+<12> -------k ------pp p-p---p- --P----- ---P---P ---KP-P- q------- ----R--- B -1 0 0 0 0 2 26 GuestFRZF GuestNPXS -1 5 0 10 14 280 48 49 K/d2-d3 (0:00) Kd3 0 1 0
+fics% 
+<12> -------k ------pp --p---p- p-P----- ---P---P ---KP-P- q------- ----R--- W -1 0 0 0 0 0 26 GuestFRZF GuestNPXS 1 5 0 10 14 280 46 50 P/a6-a5 (0:02) a5 0 1 116
+fics% 
+<12> -------k ------pp --p---p- p-P----- ---P---P ---KP-P- q---R--- -------- B -1 0 0 0 0 1 26 GuestFRZF GuestNPXS -1 5 0 10 14 280 46 50 R/e1-e2 (0:00) Re2 0 1 0
+fics% 
+<12> -------k ------pp --p---p- --P----- p--P---P ---KP-P- q---R--- -------- W -1 0 0 0 0 0 26 GuestFRZF GuestNPXS 1 5 0 10 14 280 45 51 P/a5-a4 (0:01) a4 0 1 142
+fics% 
+<12> -------k ------pp --p---p- --P----- p--P---P ---KP-P- R------- -------- B -1 0 0 0 0 0 26 GuestFRZF GuestNPXS -1 5 0 10 5 280 45 51 R/e2-a2 (0:00) Rxa2 0 1 0
+fics% 
+{Game 26 (GuestFRZF vs. GuestNPXS) GuestNPXS resigns} 1-0
+
+No ratings adjustment done.
+fics% 
+GuestPBCN (++++) seeking 3 0 unrated blitz ("play 4" to respond)
+fics% 
+GuestPBCN (++++) seeking 5 0 unrated blitz ("play 6" to respond)
+fics% 
+GuestXZDM (++++) seeking 5 0 unrated blitz ("play 57" to respond)
+fics% 
+GuestKWPR (++++) seeking 5 0 unrated blitz ("play 62" to respond)
+fics% 
+GuestTVSD (++++) seeking 15 0 unrated standard f ("play 63" to respond)
+fics% 
+GuestGKJX (++++) seeking 10 0 unrated blitz ("play 64" to respond)
+fics% 
+Shlakh (1457) seeking 3 12 unrated blitz [white] ("play 69" to respond)
+fics% 
+Shlakh (1457) seeking 2 12 unrated blitz [white] ("play 70" to respond)
+fics% 
+Bersal (1803) seeking 5 2 unrated blitz [black] ("play 7" to respond)
+fics% 

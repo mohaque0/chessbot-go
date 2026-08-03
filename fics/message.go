@@ -23,12 +23,14 @@ type FicsMessageReceived interface {
 
 func (FicsReceivedSoughtGame) sealed()     {}
 func (FicsReceivedLoginPrompt) sealed()    {}
+func (FicsReceivedLoggedInAs) sealed()     {}
 func (FicsReceivedRequestLogin) sealed()   {}
 func (FicsReceivedRequestUnknown) sealed() {}
 func (FicsReceivedBoard) sealed()          {}
 
 var _ FicsMessageReceived = (*FicsReceivedSoughtGame)(nil)
 var _ FicsMessageReceived = (*FicsReceivedLoginPrompt)(nil)
+var _ FicsMessageReceived = (*FicsReceivedLoggedInAs)(nil)
 var _ FicsMessageReceived = (*FicsReceivedRequestLogin)(nil)
 var _ FicsMessageReceived = (*FicsReceivedRequestUnknown)(nil)
 var _ FicsMessageReceived = (*FicsReceivedBoard)(nil)
@@ -43,6 +45,10 @@ type FicsReceivedSoughtGame struct {
 }
 
 type FicsReceivedLoginPrompt struct{}
+
+type FicsReceivedLoggedInAs struct {
+	Username string
+}
 
 type FicsReceivedRequestLogin struct{}
 
