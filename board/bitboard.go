@@ -143,6 +143,29 @@ func (b *BitBoard) allOccupied() Bits {
 	return b.occupied(White) | b.occupied(Black)
 }
 
+func (b *BitBoard) String() string {
+	var s string
+	for y := 7; y >= 0; y-- {
+		s += fmt.Sprintf("%d ", y+1)
+		for x := 0; x < 8; x++ {
+			p, ok := b.GetPiece(x, y)
+			if !ok {
+				s += ". "
+			} else {
+				ch := p.Type.Letter()
+				if p.Player == Black {
+					s += fmt.Sprintf("%c ", ch[0]+32)
+				} else {
+					s += ch + " "
+				}
+			}
+		}
+		s += "\n"
+	}
+	s += "  a b c d e f g h\n"
+	return s
+}
+
 // ---------------------------------------------------------------------------
 // Move application
 // ---------------------------------------------------------------------------

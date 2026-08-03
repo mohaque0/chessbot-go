@@ -31,6 +31,10 @@ func NewGame() Game {
 }
 
 func (g *Game) Run() GameResult {
+
+	idx := 0
+	fmt.Printf("%d\n%s\n", idx, g.board.String())
+
 	for {
 		moves := g.board.GetMoves(g.mover)
 		if len(moves) == 0 {
@@ -39,14 +43,17 @@ func (g *Game) Run() GameResult {
 			}
 			return Draw
 		}
-		e := g.onePlayerMoves()
+		player, m, e := g.onePlayerMoves()
+		idx++
+
+		fmt.Printf("%d: %s played %s\n%s\n", idx, player, m, g.board.String())
 		if e != nil {
 			return playerToWinner(g.mover.Other())
 		}
 	}
 }
 
-func (g *Game) onePlayerMoves() error {
+func (g *Game) onePlayerMoves() (board.Player, board.Move, error) {
 
 	var getNextMove func(board board.BitBoard) (board.Move, error)
 	player := g.mover
@@ -63,7 +70,7 @@ func (g *Game) onePlayerMoves() error {
 		if e != nil {
 			// In this case there was an error getting the move.
 			// We will not retry. This is a forfeit.
-			return e
+			return player, board.Move{}, e
 		}
 
 		b, e := g.board.MakeMove(m)
@@ -74,11 +81,9 @@ func (g *Game) onePlayerMoves() error {
 			// Success
 			g.board = b
 			g.mover = g.mover.Other()
-			break
+			return player, m, nil
 		}
 	}
-
-	return nil
 }
 
 func playerToWinner(player board.Player) GameResult {
